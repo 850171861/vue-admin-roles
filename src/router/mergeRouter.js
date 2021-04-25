@@ -8,10 +8,13 @@ let getRouter // 存储后台路由
 router.beforeEach((to, from, next) => {
   //  从Vuex中获取角色路由权限
   if (Store.state.router && Store.state.menuRouter.length > 0) {
-    getRouter = Store.state.menuRouter
-    routerGo(to, next) // 调用动态添加路由的方法
-    next()
-  } else { // 判断 数据vue中有没有路由权限,返回的login页面
+    if (!getRouter) { // 判断有没有路由权限, 没有路由权限 重新请求|从Vuex中获取
+      getRouter = Store.state.menuRouter// 拿到路由
+      routerGo(to, next)// 调用动态添加路由的方法
+    } else { // 判断有没有路由列表 有 允许进入下个这里是第二个beforeEach
+      next()
+    }
+  } else { // 判断 数据vue中有没有路由权限, 没有返回的login页面
     next()
   }
 })

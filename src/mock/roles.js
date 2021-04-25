@@ -5,17 +5,17 @@ Mock.mock('/superAdmin-mock', 'get', function () {
     {
       path: '/',
       component: '/Dashboard',
-      mate: { text: 'Dashboard' }
+      meta: { text: 'Dashboard' }
     },
     {
       path: '/log',
       component: '/Log',
-      mate: { text: '查看日志' }
+      meta: { text: '查看日志' }
     },
     {
       path: '/system',
       component: '/Article',
-      mate: { text: '系统管理' },
+      meta: { text: '系统管理' },
       children: [
         {
           path: '/article',
