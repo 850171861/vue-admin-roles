@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import Store from '@/store'
 
 import Login from '../views/Login.vue'
-
 Vue.use(VueRouter)
 
 const routes = [
@@ -33,5 +32,11 @@ router.beforeEach((to, from, next) => {
     }
   }
 })
+
+// 解决-重复点击当前路由回报错
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 
 export default router

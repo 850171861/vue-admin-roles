@@ -2,35 +2,43 @@
   <div id="components-layout-demo-basic">
     <a-layout>
       <a-layout-sider v-if="!$route.meta.showSideMenu">
-      <sideMenu />
+        <sideMenu />
       </a-layout-sider>
       <a-layout>
         <a-layout-header v-if="!$route.meta.showSideMenu">
-           <span>当前:超级管理员 </span>
-            <a-button type="primary" @click="outLogin">退出</a-button>
+          <span>当前:{{ roles }} </span>
+          <a-button type="primary" @click="outLogin">退出</a-button>
         </a-layout-header>
-        <a-layout-content >
-             <router-view/>
+        <a-layout-content>
+          <Main />
         </a-layout-content>
-        <a-layout-footer v-if="!$route.meta.showSideMenu">Footer</a-layout-footer>
+        <a-layout-footer v-if="!$route.meta.showSideMenu"
+          >Footer</a-layout-footer
+        >
       </a-layout>
     </a-layout>
   </div>
 </template>
 
 <script>
-import sideMenu from '@/components/sideMenu.vue'
+import sideMenu from "@/components/sideMenu.vue";
+import Main from "./main.vue";
+import Store from "@/store";
 export default {
-  components:{
-    sideMenu
+  components: {
+    sideMenu,
+    Main,
   },
-  methods:{
-    outLogin(){
-      window.sessionStorage.clear()
-      this.$router.push('login')
-    }
-  }
-}
+  computed: {
+    roles: () => Store.state.roles,
+  },
+  methods: {
+    outLogin() {
+      window.sessionStorage.clear();
+      this.$router.push("/login");
+    },
+  },
+};
 </script>
 
 <style>
@@ -38,7 +46,7 @@ export default {
   height: 100%;
   text-align: center;
 }
-.ant-layout-has-sider{
+.ant-layout-has-sider {
   height: 100%;
 }
 #components-layout-demo-basic .ant-layout-header,
@@ -47,7 +55,7 @@ export default {
   background: #2c3e50;
   color: #fff;
 }
-.ant-layout-header button{
+.ant-layout-header button {
   width: 60px;
 }
 #components-layout-demo-basic .ant-layout-footer {

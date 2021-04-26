@@ -7,46 +7,60 @@
       :inline-collapsed="collapsed"
       style="background: #2c3e50"
     >
-      <a-menu-item :key="index" v-for="(item,index)  in sideMenu"  @click="cutPath(item)"> 
-       <div>
-          <a-icon type="pie-chart" />
-        <span>{{item.meta.text}}</span>
-       </div>
-       </a-menu-item> 
-      <a-sub-menu :key="'sub'+index"  v-for="(item,index)  in sideMenuChildren">
-        <span slot="title"
-          ><a-icon type="mail" /><span>{{item.meta.text}}</span></span
+      <a-menu-item
+        :key="index"
+        v-for="(item, index) in sideMenu"
+        @click="cutPath(item)"
+      >
+        <div>
+          <a-icon :type="item.meta.icon" />
+          <span>{{ item.meta.title }}</span>
+        </div>
+      </a-menu-item>
+      <a-sub-menu
+        :key="'sub' + index"
+        v-for="(item, index) in sideMenuChildren"
+      >
+        <span slot="title" @click="cutPath(item)"
+          ><a-icon :type="item.meta.icon" /><span>{{
+            item.meta.title
+          }}</span></span
         >
-        <a-menu-item :key="'chilren'+i" v-for="(children,i) in item.children" @click="cutPath(item)"> {{children.meta.text}} </a-menu-item>
+        <a-menu-item
+          :key="'chilren' + i"
+          v-for="(children, i) in item.children"
+          @click="cutPath(children)"
+        >
+          {{ children.meta.title }}
+        </a-menu-item>
       </a-sub-menu>
-  
     </a-menu>
   </div>
 </template>
 
 <script>
-import Store from '@/store'
+import Store from "@/store";
 export default {
   data() {
     return {
-      collapsed: false
+      collapsed: false,
     };
   },
-  computed:{
-    sideMenu:()=>{
-      return Store.state.menuRouter.filter(item => {
-      return typeof item.children === 'undefined'
-    })
+  computed: {
+    sideMenu: () => {
+      return Store.state.menuRouter.filter((item) => {
+        return typeof item.children === "undefined";
+      });
     },
-    sideMenuChildren:()=>{
-      return Store.state.menuRouter.filter(item => {
-      return typeof item.children !== 'undefined'
-    })
-    }
+    sideMenuChildren: () => {
+      return Store.state.menuRouter.filter((item) => {
+        return typeof item.children !== "undefined";
+      });
+    },
   },
   methods: {
-    cutPath(item){
-      this.$router.push(item.path)
+    cutPath(item) {
+      this.$router.push(item.path);
     },
     toggleCollapsed() {
       this.collapsed = !this.collapsed;

@@ -10,12 +10,12 @@
 </template>
 
 <script>
-import { superAdmin } from "@/api/roles";
+import { superAdmin, commonAdmin } from "@/api/roles";
 import Store from "@/store";
 export default {
   data() {
     return {
-      username: "SuperAdmin",
+      username: "",
     };
   },
   methods: {
@@ -23,18 +23,23 @@ export default {
       const username = this.username;
       if (username == "SuperAdmin") {
         superAdmin().then((res) => {
-          console.log(res.data);
           Store.commit("setMenuRouter", res.data.data);
+          Store.commit("setRoles", res.data.msg);
         });
       } else if (username == "CommonAdmin") {
-        console.log(2);
+        commonAdmin().then((res) => {
+          Store.commit("setMenuRouter", res.data.data);
+          Store.commit("setRoles", res.data.msg);
+        });
       } else {
         this.hint();
         return;
       }
 
       Store.commit("setIsLogin", true);
-      this.$router.push("/");
+      setTimeout(() => {
+        this.$router.push("/");
+      }, 300);
     },
 
     hint() {
